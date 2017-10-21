@@ -30,7 +30,7 @@ def save_pdf(link, filename):
     from_url(link, filename, options={'quiet': ''})
 
 
-def fetch_html(HTML_FILE):
+def fetch_html(HTML_FILE, URL):
     # read html data of initial page
     if os.path.isfile(HTML_FILE):
         html = open(HTML_FILE, 'r').read()
@@ -79,7 +79,7 @@ def store_to_articles(store):
 
 def main(DIRNAME, URL, HTML_FILE):
     global THREADS, FINISHED, TOTAL
-    html = fetch_html(HTML_FILE)
+    html = fetch_html(HTML_FILE, URL)
     debug("creating soup...")
     soup = Soup(html, 'html.parser')
     store = fetch_topics(soup)
@@ -101,4 +101,4 @@ def main(DIRNAME, URL, HTML_FILE):
         THREADS += 1
         FINISHED = THREADS - threading.active_count()
 
-    print('')
+    print('', file=sys.stderr)
