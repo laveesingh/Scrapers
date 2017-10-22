@@ -14,7 +14,7 @@ THREADS = 0
 TOTAL = 0
 
 def debug(msg, prog=False):
-    global FINISHED, TOTAL
+    global FINISHED, TOTAL, THREADS
     if TOTAL!= 0:
         hashes = int(FINISHED*25/TOTAL)
     else:
