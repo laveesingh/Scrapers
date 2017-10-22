@@ -1,6 +1,7 @@
 from __future__ import print_function
 import os
 import time
+import sys
 import threading
 from pprint import pprint
 from bs4 import BeautifulSoup as Soup
@@ -38,7 +39,7 @@ def fetch_articles(soup):
     return store
 
 
-def main():
+def main(HTML_FILE, URL, DIRNAME):
     global THREADS, TOTAL, FINISHED
     html = fetch_html(HTML_FILE, URL)
     debug('creating soup...')
@@ -56,10 +57,14 @@ def main():
         debug("active threads: %d" % threading.active_count(), prog=True)
         while threading.active_count() > 10:
             time.sleep(3)
-        threading.Thread(target=save_pdf, args=(link, filename)).start()
-        THREADS += 1
+        if not os.path.isfile(filename):
+            threading.Thread(target=save_pdf, args=(link, filename)).start()
+            THREADS += 1
+        else:
+            debug('found filename:%s' % filename)
+            TOTAL -= 1
         FINISHED = THREADS - threading.active_count()
     print('', file=sys.stderr)
 
 if __name__ == '__main__':
-    main()
+    main(HTML_FILE, URL, DIRNAME)

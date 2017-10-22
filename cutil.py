@@ -27,7 +27,10 @@ def debug(msg, prog=False):
     time.sleep(0.5)
 
 def save_pdf(link, filename):
-    from_url(link, filename, options={'quiet': ''})
+    try:
+        from_url(link, filename, options={'quiet': ''})
+    except:
+        print("couldn't save for filename:%s"%filename)
 
 
 def fetch_html(HTML_FILE, URL):
