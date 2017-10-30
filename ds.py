@@ -18,7 +18,7 @@ def fetch_articles(soup):
     topics = []
     debug("%d ordered lists found" % len(soup.findAll('ol')))
     for ol in soup.findAll('ol'):
-        title = ol.findPrevious('strong').text
+        title = ol.findPrevious('strong').text.strip().strip(':').replace(' ', '_')
         try:
             os.mkdir(title)
         except:
@@ -28,7 +28,8 @@ def fetch_articles(soup):
             if not link:
                 continue
             name = anchor.text.strip()
-            name = name.replace(u'’', '').replace('/', '_')
+            name = name.replace(u'’', '').replace('/', '_').replace(' ', '_')
+            name = name.replace('?', '').replace('(', '_').replace(')', '_')
             if len(name) < 10:
                 name = link.strip('/').split('/')[-1]
             name = title + '/' + name + '.pdf'
